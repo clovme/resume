@@ -7,7 +7,7 @@ import (
 )
 
 // Tags 初始化标签
-func (d *InitData) Tags() {
+func (d *InitData) Tags() bool {
 	var modelList []models.Tags
 
 	for _, name := range []string{"Office软件", "沟通能力", "口才", "文案编辑", "数据分析", "推广运营", "产品设计", "JavaScript", "Python", "PHP", "NodeJs", "英语"} {
@@ -20,7 +20,7 @@ func (d *InitData) Tags() {
 		modelList = append(modelList, models.Tags{BaseModelWithRIDUID: ridUID(), Type: enums.Hobbies, Name: name, IsChecked: false})
 	}
 
-	insertRecord[models.Tags]("技能特长", modelList, func(model models.Tags) (db, where *gorm.DB) {
+	return insertRecord[models.Tags]("技能特长", modelList, func(model models.Tags) (db, where *gorm.DB) {
 		return d.Db, d.Db.Where("rid = ? and uid = ? and type = ? and name = ?", model.RID, model.UID, model.Type, model.Name)
 	})
 }

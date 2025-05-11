@@ -6,12 +6,12 @@ import (
 )
 
 // Campus 校园经历
-func (d *InitData) Campus() {
+func (d *InitData) Campus() bool {
 	modelList := []models.Campus{
 		{BaseModelWithRIDUID: ridUID()},
 	}
 
-	insertRecord[models.Campus]("校园经历", modelList, func(model models.Campus) (db, where *gorm.DB) {
+	return insertRecord[models.Campus]("校园经历", modelList, func(model models.Campus) (db, where *gorm.DB) {
 		return d.Db, d.Db.Where("rid = ? and uid = ? and name = ?", model.RID, model.UID, model.Name)
 	})
 }

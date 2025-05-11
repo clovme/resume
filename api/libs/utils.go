@@ -31,3 +31,8 @@ func MD5(str string) string {
 	// 将哈希值转换为十六进制字符串
 	return hex.EncodeToString(hash[:])
 }
+
+func Exists(path string) bool {
+	_, err := os.Stat(path)
+	return !os.IsNotExist(err)
+}

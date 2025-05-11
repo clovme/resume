@@ -194,7 +194,5 @@ func main() {
 
 	if err = router.Run(ipPost); err != nil {
 		log.Fatalf("WEB 服务器启动失败: %v", err)
-	} else {
-		log.Println("WEB 服务器启动成功。")
 	}
 }

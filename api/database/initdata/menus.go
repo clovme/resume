@@ -7,7 +7,7 @@ import (
 )
 
 // Menus 操作菜单
-func (d *InitData) Menus() {
+func (d *InitData) Menus() bool {
 	modelList := []models.Menus{
 		{BaseModelWithRIDUID: ridUID(), Title: "基础信息", Name: "BasicInfo", IsActivate: true, IsOption: false, IsChecked: true, IsPage: true, Sort: 0},
 		{BaseModelWithRIDUID: ridUID(), Title: "求职岗位", Name: "JobPosition", IsActivate: false, IsOption: true, IsChecked: true, IsPage: false, Sort: 1},
@@ -24,7 +24,7 @@ func (d *InitData) Menus() {
 		{BaseModelWithRIDUID: ridUID(), Title: "求职意向", Name: "JobIntentions", IsActivate: false, IsOption: true, IsChecked: false, IsPage: true, Sort: 12},
 	}
 
-	insertRecord[models.Menus]("操作菜单", modelList, func(model models.Menus) (db, where *gorm.DB) {
+	return insertRecord[models.Menus]("操作菜单", modelList, func(model models.Menus) (db, where *gorm.DB) {
 		return d.Db, d.Db.Where("title = ? and name = ? and rid = ? and uid = ?", model.Title, model.Name, enums.Vx32, enums.Vx32)
 	})
 }
