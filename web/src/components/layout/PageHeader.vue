@@ -280,7 +280,7 @@ async function onCopyResume(data: IResumes) {
 }
 
 function openSource() {
-  open('https://github.com/clovme/resume-api.git', '_blank')
+  open('https://github.com/clovme/resume.git', '_blank')
 }
 
 if (!rid) {

@@ -11,11 +11,13 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"resume/database"
 	"resume/libs"
 	"resume/routers"
 	"resume/types/enums"
+	"runtime"
 	"strings"
 )
 
@@ -23,6 +25,10 @@ import (
 var static embed.FS
 
 func init() {
+	if runtime.GOOS != "windows" {
+		log.Printf("此程序只支持 Windows 系统。\n")
+		os.Exit(-1)
+	}
 	fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 	fmt.Println(fmt.Sprintf("+ 使用 %s init 初始化配置文件。", filepath.Base(os.Args[0])))
 	fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
@@ -170,14 +176,25 @@ func main() {
 	port := cfg.Section("Server").Key("port").String()
 	mode := cfg.Section("Server").Key("mode").String()
 
+	ipPost := fmt.Sprintf("%s:%s", host, port)
+
 	log.Printf("日志级别：(%s)debug/release/test\n", mode)
-	log.Println(fmt.Sprintf("地址端口：http://%s:%s", host, port))
+	log.Println(fmt.Sprintf("地址端口：http://%s", ipPost))
 	gin.SetMode(mode)
 	router := gin.Default()
 	// 视图路由配置
 	routers.Initialization(router, db, &static)
-	err = router.Run(fmt.Sprintf("%s:%s", host, port))
-	if err != nil {
+
+	go func() {
+		cmd := exec.Command("rundll32", "url.dll,FileProtocolHandler", fmt.Sprintf("http://%s", ipPost))
+		if err := cmd.Run(); err != nil {
+			log.Fatalf("打开浏览器失败: %v", err)
+		}
+	}()
+
+	if err = router.Run(ipPost); err != nil {
 		log.Fatalf("WEB 服务器启动失败: %v", err)
+	} else {
+		log.Println("WEB 服务器启动成功。")
 	}
 }

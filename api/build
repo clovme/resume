@@ -5,13 +5,14 @@ GOOS   = windows
 GOARCH = amd64
 
 [build]
+gen     = false
 gui     = false
 all     = false
 upx     = true
 mode    = false
 plat    = windows
 arch    = amd64
-version = 0,0,3
+version = 0,0,5
 
 [filename]
 name = 个人简历

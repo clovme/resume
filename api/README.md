@@ -23,15 +23,12 @@ go version go1.22.2 windows/amd64
 5. **编译Go程序并链接资源文件**：
    
    ```sh
-   // 带控制台 Go 提供了 -trimpath 选项，可以去除编译时的路径信息
-   go build -ldflags "-s -w" -trimpath -o resume-v1.0.exe
+   # 安装build工具
+   go install github.com/clovme/build@latest
    
-   // 不带控制台
-   go build -ldflags="-H windowsgui" -o resume-v1.0.exe
-   
-   // -s：去除符号表
-   // -w：去除调试信息
-   // -trimpath：消除路径信息，避免暴露源码路径
+   # 执行build编译
+   build
    ```
+   
 
 web页面 [https://github.com/clovme/resume-web.git](https://github.com/clovme/resume-web.git)
