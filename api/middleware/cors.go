@@ -17,9 +17,17 @@ func CorsMiddleware() gin.HandlerFunc {
 		// 设置允许的请求头
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Authorization, Origin, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Browser-Type")
 
-		// 如果请求方法是 OPTIONS，则直接返回 200 状态码
+		// 允许请求携带凭证（如 Cookie、HTTP 认证信息等）
+		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+		
+		// 设置浏览器可以缓存预检请求响应的最长时间（秒）
+		c.Writer.Header().Set("Access-Control-Max-Age", "3600")
+
+
+		// 如果请求方法为 OPTIONS（预检请求）
+		// 则返回 204 No Content 状态码，并终止后续的请求处理链
 		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(http.StatusOK)
+			c.AbortWithStatus(http.StatusNoContent)
 			return
 		}
 
